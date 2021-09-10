@@ -1,0 +1,709 @@
+{
+	"version": 1,
+	"collections": [
+		{
+			"id": "52281d85-2259-4c56-97aa-71d021d88427",
+			"uid": "0-52281d85-2259-4c56-97aa-71d021d88427",
+			"name": "Transactions",
+			"description": null,
+			"auth": null,
+			"events": null,
+			"variables": [
+				{
+					"key": "TOKEN",
+					"value": "eyJzdWIiOiJhbGFuLnR1cmluZ0B0ZXN0LmNvbSIsImlhdCI6MTYzMTIzMzE4NSwiZXhwIjoxNjMxMjMzNzg1LCJhdXRoIjoiUk9MRV9BRE1JTiJ9",
+					"disabled": false
+				}
+			],
+			"order": [
+				"212881ef-e046-48ee-8e2b-ed7d973ae35c",
+				"4fef9f18-1086-41e3-8656-5c86799e2df2",
+				"24b73159-b9b1-4797-a767-f54a46ecac8f",
+				"3899de89-733c-4e4c-86ef-9361fa72f54f",
+				"140878c5-040c-4bcd-b22e-79b1387c1276",
+				"085dbbe8-82b4-4330-92c2-941f28581bbb",
+				"50ba9938-b796-4fa3-aa02-8d7cc12bc3cd"
+			],
+			"folders_order": [],
+			"protocolProfileBehavior": {},
+			"createdAt": "2021-09-03T23:33:19.166Z",
+			"folders": [],
+			"requests": [
+				{
+					"id": "085dbbe8-82b4-4330-92c2-941f28581bbb",
+					"uid": "0-085dbbe8-82b4-4330-92c2-941f28581bbb",
+					"name": "Patch Transaction",
+					"url": "{{HOST}}/api/v1/transactions/2",
+					"description": null,
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [],
+					"method": "PATCH",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{TOKEN}}",
+								"type": "string"
+							}
+						]
+					},
+					"events": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d1741a86-1fd3-46d5-9da7-26681c2ee811",
+								"exec": [
+									"const echoPostRequest = {",
+									"  url: 'http://localhost:8080/api/auth/token',",
+									"  method: 'POST',",
+									"  header: 'Content-Type:application/json',",
+									"  body: {",
+									"    mode: 'application/json',",
+									"    raw: JSON.stringify(",
+									"        {",
+									"        \tusername:'alan.turing@test.com',",
+									"        \tpassword:'test-pass'",
+									"        })",
+									"  }",
+									"};",
+									"",
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('TOKEN_EXPIRY') || ",
+									"    !pm.environment.get('TOKEN')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}",
+									"",
+									"if (getToken === true) {",
+									"    pm.sendRequest(echoPostRequest, function (err, res) {",
+									"    console.log(err ? err : res.json());",
+									"        if (err === null) {",
+									"            console.log('Saving the token and expiry date')",
+									"            var responseJson = res.json();",
+									"            pm.environment.set('TOKEN', responseJson.access_token)",
+									"    ",
+									"            var expiryDate = new Date();",
+									"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+									"            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"folder": null,
+					"responses_order": [],
+					"preRequestScript": "const echoPostRequest = {\n  url: 'http://localhost:8080/api/auth/token',\n  method: 'POST',\n  header: 'Content-Type:application/json',\n  body: {\n    mode: 'application/json',\n    raw: JSON.stringify(\n        {\n        \tusername:'alan.turing@test.com',\n        \tpassword:'test-pass'\n        })\n  }\n};\n\nvar getToken = true;\n\nif (!pm.environment.get('TOKEN_EXPIRY') || \n    !pm.environment.get('TOKEN')) {\n    console.log('Token or expiry date are missing')\n} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {\n    console.log('Token is expired')\n} else {\n    getToken = false;\n    console.log('Token and expiry date are all good');\n}\n\nif (getToken === true) {\n    pm.sendRequest(echoPostRequest, function (err, res) {\n    console.log(err ? err : res.json());\n        if (err === null) {\n            console.log('Saving the token and expiry date')\n            var responseJson = res.json();\n            pm.environment.set('TOKEN', responseJson.access_token)\n    \n            var expiryDate = new Date();\n            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);\n            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());\n        }\n    });\n}",
+					"tests": null,
+					"currentHelper": "bearerAuth",
+					"helperAttributes": {
+						"id": "bearer",
+						"token": "{{TOKEN}}"
+					},
+					"collectionId": "52281d85-2259-4c56-97aa-71d021d88427",
+					"rawModeData": "{\n    \"currency\": \"EUR\"\n}",
+					"headers": "",
+					"pathVariables": {}
+				},
+				{
+					"id": "140878c5-040c-4bcd-b22e-79b1387c1276",
+					"uid": "0-140878c5-040c-4bcd-b22e-79b1387c1276",
+					"name": "Update Transaction",
+					"url": "{{HOST}}/api/v1/transactions/2",
+					"description": null,
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [],
+					"method": "PUT",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{TOKEN}}",
+								"type": "string"
+							}
+						]
+					},
+					"events": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "398786bc-bf7b-42f3-b996-ad5331eadf36",
+								"exec": [
+									"const echoPostRequest = {",
+									"  url: 'http://localhost:8080/api/auth/token',",
+									"  method: 'POST',",
+									"  header: 'Content-Type:application/json',",
+									"  body: {",
+									"    mode: 'application/json',",
+									"    raw: JSON.stringify(",
+									"        {",
+									"        \tusername:'alan.turing@test.com',",
+									"        \tpassword:'test-pass'",
+									"        })",
+									"  }",
+									"};",
+									"",
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('TOKEN_EXPIRY') || ",
+									"    !pm.environment.get('TOKEN')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}",
+									"",
+									"if (getToken === true) {",
+									"    pm.sendRequest(echoPostRequest, function (err, res) {",
+									"    console.log(err ? err : res.json());",
+									"        if (err === null) {",
+									"            console.log('Saving the token and expiry date')",
+									"            var responseJson = res.json();",
+									"            pm.environment.set('TOKEN', responseJson.access_token)",
+									"    ",
+									"            var expiryDate = new Date();",
+									"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+									"            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"folder": null,
+					"responses_order": [],
+					"preRequestScript": "const echoPostRequest = {\n  url: 'http://localhost:8080/api/auth/token',\n  method: 'POST',\n  header: 'Content-Type:application/json',\n  body: {\n    mode: 'application/json',\n    raw: JSON.stringify(\n        {\n        \tusername:'alan.turing@test.com',\n        \tpassword:'test-pass'\n        })\n  }\n};\n\nvar getToken = true;\n\nif (!pm.environment.get('TOKEN_EXPIRY') || \n    !pm.environment.get('TOKEN')) {\n    console.log('Token or expiry date are missing')\n} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {\n    console.log('Token is expired')\n} else {\n    getToken = false;\n    console.log('Token and expiry date are all good');\n}\n\nif (getToken === true) {\n    pm.sendRequest(echoPostRequest, function (err, res) {\n    console.log(err ? err : res.json());\n        if (err === null) {\n            console.log('Saving the token and expiry date')\n            var responseJson = res.json();\n            pm.environment.set('TOKEN', responseJson.access_token)\n    \n            var expiryDate = new Date();\n            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);\n            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());\n        }\n    });\n}",
+					"tests": null,
+					"currentHelper": "bearerAuth",
+					"helperAttributes": {
+						"id": "bearer",
+						"token": "{{TOKEN}}"
+					},
+					"collectionId": "52281d85-2259-4c56-97aa-71d021d88427",
+					"rawModeData": "{\n\t\"status\": \"PROCESSING\",\n\t\"currency\": \"GBP\",\n    \"amount\": 111.0,\n    \"description\": \"Test Description\"\n}",
+					"headers": "",
+					"pathVariables": {}
+				},
+				{
+					"id": "212881ef-e046-48ee-8e2b-ed7d973ae35c",
+					"uid": "0-212881ef-e046-48ee-8e2b-ed7d973ae35c",
+					"name": "Get All Transactions",
+					"url": "{{HOST}}/api/v1/transactions",
+					"description": null,
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [
+						{
+							"key": "",
+							"value": "",
+							"equals": true,
+							"description": "",
+							"enabled": false
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{TOKEN}}",
+								"type": "string"
+							}
+						]
+					},
+					"events": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c683f33f-02bf-4b97-b568-bf4786c1ddbe",
+								"exec": [
+									"const echoPostRequest = {",
+									"  url: 'http://localhost:8080/api/auth/token',",
+									"  method: 'POST',",
+									"  header: 'Content-Type:application/json',",
+									"  body: {",
+									"    mode: 'application/json',",
+									"    raw: JSON.stringify(",
+									"        {",
+									"        \tusername:'alan.turing@test.com',",
+									"        \tpassword:'test-pass'",
+									"        })",
+									"  }",
+									"};",
+									"",
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('TOKEN_EXPIRY') || ",
+									"    !pm.environment.get('TOKEN')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}",
+									"",
+									"if (getToken === true) {",
+									"    pm.sendRequest(echoPostRequest, function (err, res) {",
+									"    console.log(err ? err : res.json());",
+									"        if (err === null) {",
+									"            console.log('Saving the token and expiry date')",
+									"            var responseJson = res.json();",
+									"            pm.environment.set('TOKEN', responseJson.access_token)",
+									"    ",
+									"            var expiryDate = new Date();",
+									"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+									"            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"folder": null,
+					"responses_order": [],
+					"preRequestScript": "const echoPostRequest = {\n  url: 'http://localhost:8080/api/auth/token',\n  method: 'POST',\n  header: 'Content-Type:application/json',\n  body: {\n    mode: 'application/json',\n    raw: JSON.stringify(\n        {\n        \tusername:'alan.turing@test.com',\n        \tpassword:'test-pass'\n        })\n  }\n};\n\nvar getToken = true;\n\nif (!pm.environment.get('TOKEN_EXPIRY') || \n    !pm.environment.get('TOKEN')) {\n    console.log('Token or expiry date are missing')\n} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {\n    console.log('Token is expired')\n} else {\n    getToken = false;\n    console.log('Token and expiry date are all good');\n}\n\nif (getToken === true) {\n    pm.sendRequest(echoPostRequest, function (err, res) {\n    console.log(err ? err : res.json());\n        if (err === null) {\n            console.log('Saving the token and expiry date')\n            var responseJson = res.json();\n            pm.environment.set('TOKEN', responseJson.access_token)\n    \n            var expiryDate = new Date();\n            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);\n            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());\n        }\n    });\n}",
+					"tests": null,
+					"currentHelper": "bearerAuth",
+					"helperAttributes": {
+						"id": "bearer",
+						"token": "{{TOKEN}}"
+					},
+					"collectionId": "52281d85-2259-4c56-97aa-71d021d88427",
+					"headers": "",
+					"pathVariables": {}
+				},
+				{
+					"id": "24b73159-b9b1-4797-a767-f54a46ecac8f",
+					"uid": "0-24b73159-b9b1-4797-a767-f54a46ecac8f",
+					"name": "Get Transaction By ID",
+					"url": "{{HOST}}/api/v1/transactions/2",
+					"description": null,
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{TOKEN}}",
+								"type": "string"
+							}
+						]
+					},
+					"events": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2b6b20fa-a3a1-4fe5-9214-463ba1336af7",
+								"exec": [
+									"const echoPostRequest = {",
+									"  url: 'http://localhost:8080/api/auth/token',",
+									"  method: 'POST',",
+									"  header: 'Content-Type:application/json',",
+									"  body: {",
+									"    mode: 'application/json',",
+									"    raw: JSON.stringify(",
+									"        {",
+									"        \tusername:'alan.turing@test.com',",
+									"        \tpassword:'test-pass'",
+									"        })",
+									"  }",
+									"};",
+									"",
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('TOKEN_EXPIRY') || ",
+									"    !pm.environment.get('TOKEN')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}",
+									"",
+									"if (getToken === true) {",
+									"    pm.sendRequest(echoPostRequest, function (err, res) {",
+									"    console.log(err ? err : res.json());",
+									"        if (err === null) {",
+									"            console.log('Saving the token and expiry date')",
+									"            var responseJson = res.json();",
+									"            pm.environment.set('TOKEN', responseJson.access_token)",
+									"    ",
+									"            var expiryDate = new Date();",
+									"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+									"            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"folder": null,
+					"responses_order": [],
+					"preRequestScript": "const echoPostRequest = {\n  url: 'http://localhost:8080/api/auth/token',\n  method: 'POST',\n  header: 'Content-Type:application/json',\n  body: {\n    mode: 'application/json',\n    raw: JSON.stringify(\n        {\n        \tusername:'alan.turing@test.com',\n        \tpassword:'test-pass'\n        })\n  }\n};\n\nvar getToken = true;\n\nif (!pm.environment.get('TOKEN_EXPIRY') || \n    !pm.environment.get('TOKEN')) {\n    console.log('Token or expiry date are missing')\n} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {\n    console.log('Token is expired')\n} else {\n    getToken = false;\n    console.log('Token and expiry date are all good');\n}\n\nif (getToken === true) {\n    pm.sendRequest(echoPostRequest, function (err, res) {\n    console.log(err ? err : res.json());\n        if (err === null) {\n            console.log('Saving the token and expiry date')\n            var responseJson = res.json();\n            pm.environment.set('TOKEN', responseJson.access_token)\n    \n            var expiryDate = new Date();\n            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);\n            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());\n        }\n    });\n}",
+					"tests": null,
+					"currentHelper": "bearerAuth",
+					"helperAttributes": {
+						"id": "bearer",
+						"token": "{{TOKEN}}"
+					},
+					"collectionId": "52281d85-2259-4c56-97aa-71d021d88427",
+					"headers": "",
+					"pathVariables": {}
+				},
+				{
+					"id": "3899de89-733c-4e4c-86ef-9361fa72f54f",
+					"uid": "0-3899de89-733c-4e4c-86ef-9361fa72f54f",
+					"name": "Create Transaction",
+					"url": "{{HOST}}/api/v1/transactions",
+					"description": null,
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [],
+					"method": "POST",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{TOKEN}}",
+								"type": "string"
+							}
+						]
+					},
+					"events": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "72484d1a-caf3-4d82-8b30-8e6654877ea8",
+								"exec": [
+									"const echoPostRequest = {",
+									"  url: 'http://localhost:8080/api/auth/token',",
+									"  method: 'POST',",
+									"  header: 'Content-Type:application/json',",
+									"  body: {",
+									"    mode: 'application/json',",
+									"    raw: JSON.stringify(",
+									"        {",
+									"        \tusername:'alan.turing@test.com',",
+									"        \tpassword:'test-pass'",
+									"        })",
+									"  }",
+									"};",
+									"",
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('TOKEN_EXPIRY') || ",
+									"    !pm.environment.get('TOKEN')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}",
+									"",
+									"if (getToken === true) {",
+									"    pm.sendRequest(echoPostRequest, function (err, res) {",
+									"    console.log(err ? err : res.json());",
+									"        if (err === null) {",
+									"            console.log('Saving the token and expiry date')",
+									"            var responseJson = res.json();",
+									"            pm.environment.set('TOKEN', responseJson.access_token)",
+									"    ",
+									"            var expiryDate = new Date();",
+									"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+									"            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"folder": null,
+					"responses_order": [],
+					"preRequestScript": "const echoPostRequest = {\n  url: 'http://localhost:8080/api/auth/token',\n  method: 'POST',\n  header: 'Content-Type:application/json',\n  body: {\n    mode: 'application/json',\n    raw: JSON.stringify(\n        {\n        \tusername:'alan.turing@test.com',\n        \tpassword:'test-pass'\n        })\n  }\n};\n\nvar getToken = true;\n\nif (!pm.environment.get('TOKEN_EXPIRY') || \n    !pm.environment.get('TOKEN')) {\n    console.log('Token or expiry date are missing')\n} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {\n    console.log('Token is expired')\n} else {\n    getToken = false;\n    console.log('Token and expiry date are all good');\n}\n\nif (getToken === true) {\n    pm.sendRequest(echoPostRequest, function (err, res) {\n    console.log(err ? err : res.json());\n        if (err === null) {\n            console.log('Saving the token and expiry date')\n            var responseJson = res.json();\n            pm.environment.set('TOKEN', responseJson.access_token)\n    \n            var expiryDate = new Date();\n            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);\n            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());\n        }\n    });\n}",
+					"tests": null,
+					"currentHelper": "bearerAuth",
+					"helperAttributes": {
+						"id": "bearer",
+						"token": "{{TOKEN}}"
+					},
+					"collectionId": "52281d85-2259-4c56-97aa-71d021d88427",
+					"rawModeData": "{\n\t\"status\": \"PROCESSING\",\n\t\"currency\": \"EUR\",\n    \"amount\": 122.0,\n    \"description\": \"Test Description\"\n}",
+					"headers": "",
+					"pathVariables": {}
+				},
+				{
+					"id": "4fef9f18-1086-41e3-8656-5c86799e2df2",
+					"uid": "0-4fef9f18-1086-41e3-8656-5c86799e2df2",
+					"name": "Get Transactions By Status",
+					"url": "{{HOST}}/api/v1/transactions?status=PROCESSING",
+					"description": null,
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [
+						{
+							"key": "status",
+							"value": "PROCESSING",
+							"equals": true,
+							"description": "",
+							"enabled": true
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{TOKEN}}",
+								"type": "string"
+							}
+						]
+					},
+					"events": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7b8d7ae2-8518-4b2d-892d-8ff0ec975f2a",
+								"exec": [
+									"const echoPostRequest = {",
+									"  url: 'http://localhost:8080/api/auth/token',",
+									"  method: 'POST',",
+									"  header: 'Content-Type:application/json',",
+									"  body: {",
+									"    mode: 'application/json',",
+									"    raw: JSON.stringify(",
+									"        {",
+									"        \tusername:'alan.turing@test.com',",
+									"        \tpassword:'test-pass'",
+									"        })",
+									"  }",
+									"};",
+									"",
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('TOKEN_EXPIRY') || ",
+									"    !pm.environment.get('TOKEN')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}",
+									"",
+									"if (getToken === true) {",
+									"    pm.sendRequest(echoPostRequest, function (err, res) {",
+									"    console.log(err ? err : res.json());",
+									"        if (err === null) {",
+									"            console.log('Saving the token and expiry date')",
+									"            var responseJson = res.json();",
+									"            pm.environment.set('TOKEN', responseJson.access_token)",
+									"    ",
+									"            var expiryDate = new Date();",
+									"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+									"            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"folder": null,
+					"responses_order": [],
+					"preRequestScript": "const echoPostRequest = {\n  url: 'http://localhost:8080/api/auth/token',\n  method: 'POST',\n  header: 'Content-Type:application/json',\n  body: {\n    mode: 'application/json',\n    raw: JSON.stringify(\n        {\n        \tusername:'alan.turing@test.com',\n        \tpassword:'test-pass'\n        })\n  }\n};\n\nvar getToken = true;\n\nif (!pm.environment.get('TOKEN_EXPIRY') || \n    !pm.environment.get('TOKEN')) {\n    console.log('Token or expiry date are missing')\n} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {\n    console.log('Token is expired')\n} else {\n    getToken = false;\n    console.log('Token and expiry date are all good');\n}\n\nif (getToken === true) {\n    pm.sendRequest(echoPostRequest, function (err, res) {\n    console.log(err ? err : res.json());\n        if (err === null) {\n            console.log('Saving the token and expiry date')\n            var responseJson = res.json();\n            pm.environment.set('TOKEN', responseJson.access_token)\n    \n            var expiryDate = new Date();\n            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);\n            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());\n        }\n    });\n}",
+					"tests": null,
+					"currentHelper": "bearerAuth",
+					"helperAttributes": {
+						"id": "bearer",
+						"token": "{{TOKEN}}"
+					},
+					"collectionId": "52281d85-2259-4c56-97aa-71d021d88427",
+					"headers": "",
+					"pathVariables": {}
+				},
+				{
+					"id": "50ba9938-b796-4fa3-aa02-8d7cc12bc3cd",
+					"uid": "0-50ba9938-b796-4fa3-aa02-8d7cc12bc3cd",
+					"name": "Delete Transaction",
+					"url": "{{HOST}}/api/v1/transactions/1",
+					"description": null,
+					"data": null,
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": null,
+					"headerData": [],
+					"method": "DELETE",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{TOKEN}}",
+								"type": "string"
+							}
+						]
+					},
+					"events": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b9e5d9ca-6772-4c05-be57-fd3e447e30cf",
+								"exec": [
+									"const echoPostRequest = {",
+									"  url: 'http://localhost:8080/api/auth/token',",
+									"  method: 'POST',",
+									"  header: 'Content-Type:application/json',",
+									"  body: {",
+									"    mode: 'application/json',",
+									"    raw: JSON.stringify(",
+									"        {",
+									"        \tusername:'alan.turing@test.com',",
+									"        \tpassword:'test-pass'",
+									"        })",
+									"  }",
+									"};",
+									"",
+									"var getToken = true;",
+									"",
+									"if (!pm.environment.get('TOKEN_EXPIRY') || ",
+									"    !pm.environment.get('TOKEN')) {",
+									"    console.log('Token or expiry date are missing')",
+									"} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {",
+									"    console.log('Token is expired')",
+									"} else {",
+									"    getToken = false;",
+									"    console.log('Token and expiry date are all good');",
+									"}",
+									"",
+									"if (getToken === true) {",
+									"    pm.sendRequest(echoPostRequest, function (err, res) {",
+									"    console.log(err ? err : res.json());",
+									"        if (err === null) {",
+									"            console.log('Saving the token and expiry date')",
+									"            var responseJson = res.json();",
+									"            pm.environment.set('TOKEN', responseJson.access_token)",
+									"    ",
+									"            var expiryDate = new Date();",
+									"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);",
+									"            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());",
+									"        }",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"folder": null,
+					"responses_order": [],
+					"preRequestScript": "const echoPostRequest = {\n  url: 'http://localhost:8080/api/auth/token',\n  method: 'POST',\n  header: 'Content-Type:application/json',\n  body: {\n    mode: 'application/json',\n    raw: JSON.stringify(\n        {\n        \tusername:'alan.turing@test.com',\n        \tpassword:'test-pass'\n        })\n  }\n};\n\nvar getToken = true;\n\nif (!pm.environment.get('TOKEN_EXPIRY') || \n    !pm.environment.get('TOKEN')) {\n    console.log('Token or expiry date are missing')\n} else if (pm.environment.get('TOKEN_EXPIRY') <= (new Date()).getTime()) {\n    console.log('Token is expired')\n} else {\n    getToken = false;\n    console.log('Token and expiry date are all good');\n}\n\nif (getToken === true) {\n    pm.sendRequest(echoPostRequest, function (err, res) {\n    console.log(err ? err : res.json());\n        if (err === null) {\n            console.log('Saving the token and expiry date')\n            var responseJson = res.json();\n            pm.environment.set('TOKEN', responseJson.access_token)\n    \n            var expiryDate = new Date();\n            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.expires_in);\n            pm.environment.set('TOKEN_EXPIRY', expiryDate.getTime());\n        }\n    });\n}",
+					"tests": null,
+					"currentHelper": "bearerAuth",
+					"helperAttributes": {
+						"id": "bearer",
+						"token": "{{TOKEN}}"
+					},
+					"collectionId": "52281d85-2259-4c56-97aa-71d021d88427",
+					"headers": "",
+					"pathVariables": {}
+				}
+			]
+		}
+	],
+	"environments": [
+		{
+			"id": "0e6e0307-5d15-4e32-b330-c77ae7c97ef0",
+			"name": "Local",
+			"values": [
+				{
+					"key": "TOKEN",
+					"value": "",
+					"enabled": true
+				},
+				{
+					"key": "TOKEN_EXPIRY",
+					"value": "",
+					"enabled": true
+				},
+				{
+					"key": "HOST",
+					"value": "http://localhost:8080",
+					"enabled": true
+				}
+			]
+		},
+		{
+			"id": "c1af5b6a-13c3-4886-8081-a7a0f21e14c6",
+			"name": "My Workspace - globals",
+			"values": []
+		}
+	],
+	"headerPresets": [],
+	"globals": []
+}

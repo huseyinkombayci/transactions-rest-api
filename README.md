@@ -36,7 +36,7 @@
 
 ### Clone:
 ```
-git clone git@huseyinkombayci-transactions-rest-api.git
+git clone git@github.com:huseyinkombayci/transactions-rest-api.git
 ```
 
 ### Build the project:
